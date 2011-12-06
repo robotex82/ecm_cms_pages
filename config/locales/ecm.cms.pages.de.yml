@@ -1,0 +1,9 @@
+de:
+  activerecord:
+    models:
+      ecm:
+        cms:
+           pages:
+             database_template: "Seitenvorlagen"
+             database_partial: "Seitenfragmente"
+             page_fragments: "Page Fragments"

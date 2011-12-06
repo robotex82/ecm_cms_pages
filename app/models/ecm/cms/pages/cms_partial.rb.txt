@@ -1,0 +1,81 @@
+module Ecm
+  module Cms
+    module Pages
+      class CmsPartial < ActiveRecord::Base        
+        attr_protected :path
+        validates :page_fragment_id, :presence => true
+        validates :path, :presence => true
+        # 1) Allow nil on format validation
+        validates :format,  :inclusion   => Mime::SET.symbols.map(&:to_s),
+                            :allow_nil   => true, 
+                            :allow_blank => true
+        validates :locale,  :inclusion   => I18n.available_locales.map(&:to_s)
+        validates :handler, :inclusion   => ActionView::Template::Handlers.extensions.map(&:to_s)
+        
+        def partial
+          true
+        end  
+        
+        def processed_body
+          body
+#          return "" if self.body.nil?
+#          body.html_safe
+        end   
+        
+        def cms_template_path
+          cms_template.path rescue nil
+        end  
+        
+        def page_fragment_name
+          page_fragment.name rescue nil
+        end         
+        
+        before_validation do 
+          if cms_template_path
+            self.path = "/#{cms_template_path}/#{page_fragment_name}"
+          else
+            #self.path = "/#{page_fragment_name}"
+            self.path = page_fragment_name
+          end  
+        end
+
+        after_save do
+          Ecm::Cms::Pages::PartialResolver.instance.clear_cache
+        end
+        
+        after_initialize :init
+        
+        def init
+          self.locale  ||= I18n.locale
+          self.format  ||= "html"
+          self.handler ||= "markerb"
+        end
+        
+#        rails_admin do
+#          edit do
+#            field :path
+#            field :path
+#            field :body
+#            field :locale, :enum do
+#              enum do
+#                I18n.available_locales.map(&:to_s)
+#              end
+#            end      
+#            field :format, :enum do
+#              enum do
+#                Mime::SET.symbols.map(&:to_s)
+#              end
+#            end
+#            field :handler, :enum do
+#              enum do
+#                ActionView::Template::Handlers.extensions.map(&:to_s) 
+#              end
+#            end  
+#            field :partial    
+#          end
+#        end
+        
+      end
+    end
+  end
+end      

@@ -1,0 +1,14 @@
+class Ecm::Cms::Pages::PageFragment < ActiveRecord::Base
+  has_many :cms_partials
+  validates :name, :presence => true
+  
+  def identifier
+    name.underscore
+  end
+  
+  after_save do
+    cms_partials.each do |cms_partial|
+      cms_partial.save
+    end
+  end
+end

@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title><%= cms_title("Example Site") %></title>
+  <%= stylesheet_link_tag :all %>
+  <%= cms_page_stylesheets(:frontend) %>
+  <%= javascript_include_tag :defaults %>
+  <%= csrf_meta_tag %>
+  <%= cms_meta_description_tag() %>
+</head>
+<body class="<%= cms_page_classes() %>">
+
+<%= yield %>
+
+</body>
+</html>
