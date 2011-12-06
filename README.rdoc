@@ -1,3 +1,13 @@
 = EcmCmsPages
 
 This project rocks and uses MIT-LICENSE.
+
+= TODO
+
+  * Rename CmsTemplate to Pages
+  * Add Layout field to Pages and make render use the chosen Layout
+  * Add Folder structure
+  * Add SimpleNavigation support
+  * Add Partials
+  * Add Layouts
+  
